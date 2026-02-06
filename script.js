@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
           
           // Scroll to top
           window.scrollTo({ top: 0, behavior: 'smooth' });
-        }, 1200);
+        }, 700);
       }
     });
   });
