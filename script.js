@@ -1,5 +1,88 @@
 // Smooth page flip navigation
 document.addEventListener('DOMContentLoaded', function() {
+  // PWA Install Button Handling
+  let deferredPrompt;
+  const installBtn = document.getElementById('installBtn');
+
+  // Check if iOS Safari
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+  
+  // Show install button if not already installed
+  if (!isStandalone) {
+    // For iOS, show button with different behavior
+    if (isIOS) {
+      installBtn.style.display = 'flex';
+      installBtn.innerHTML = `
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 5v14M5 12l7 7 7-7"/>
+        </svg>
+        Add to Home Screen
+      `;
+    } else {
+      // For Android/Desktop, show if beforeinstallprompt fires
+      installBtn.style.display = 'flex';
+    }
+  }
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent the mini-infobar from appearing on mobile
+    e.preventDefault();
+    // Stash the event so it can be triggered later
+    deferredPrompt = e;
+    // Show the install button
+    installBtn.style.display = 'flex';
+    installBtn.innerHTML = `
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg>
+      Install App
+    `;
+  });
+
+  installBtn.addEventListener('click', async () => {
+    if (isIOS) {
+      // Show iOS instructions
+      alert('To install this app:\n\n1. Tap the Share button (square with arrow)\n2. Scroll and tap "Add to Home Screen"\n3. Tap "Add" in the top right');
+      return;
+    }
+    
+    if (!deferredPrompt) {
+      // Detect browser type
+      const userAgent = navigator.userAgent.toLowerCase();
+      let instructions = 'To install this app:\n\n';
+      
+      if (userAgent.includes('chrome')) {
+        instructions += '1. Tap the three dots (⋮) in the top right\n2. Tap "Add to Home screen" or "Install app"\n3. Tap "Add" or "Install"';
+      } else if (userAgent.includes('firefox')) {
+        instructions += '1. Tap the three dots in the address bar\n2. Tap "Install"\n3. Tap "Add" to confirm';
+      } else if (userAgent.includes('samsung')) {
+        instructions += '1. Tap the menu button\n2. Tap "Add page to"\n3. Tap "Home screen"';
+      } else {
+        instructions += '1. Look for "Install app" or "Add to Home screen" in your browser menu (⋮)\n2. Follow the prompts to install';
+      }
+      
+      alert(instructions);
+      return;
+    }
+    // Show the install prompt
+    deferredPrompt.prompt();
+    // Wait for the user to respond to the prompt
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log(`User response to the install prompt: ${outcome}`);
+    // Clear the deferredPrompt
+    deferredPrompt = null;
+    // Hide the install button
+    installBtn.style.display = 'none';
+  });
+
+  window.addEventListener('appinstalled', () => {
+    console.log('PWA was installed');
+    installBtn.style.display = 'none';
+  });
+
   const navButtons = document.querySelectorAll('.nav-btn');
   const slides = document.querySelectorAll('.slide');
   
