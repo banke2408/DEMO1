@@ -347,49 +347,55 @@ li:last-child { margin-bottom: 0; }
   color: #0f172a;
 }
 
-/* Page Flip Animation */
+/* Page Flip Animation - Like a Real Book */
 @keyframes flipIn {
   0% {
-    transform: perspective(3000px) rotateY(-80deg) translateZ(-200px) scale(0.95);
+    transform: perspective(2500px) rotateY(90deg) translateZ(-150px) scale(0.9);
     opacity: 0;
-    filter: blur(5px) brightness(0.8);
+    filter: blur(3px) brightness(0.7);
+    transform-origin: left center;
   }
-  40% {
-    filter: blur(2px) brightness(0.9);
+  50% {
+    filter: blur(1px) brightness(0.85);
   }
   100% {
-    transform: perspective(3000px) rotateY(0deg) translateZ(0) scale(1);
+    transform: perspective(2500px) rotateY(0deg) translateZ(0) scale(1);
     opacity: 1;
     filter: blur(0) brightness(1);
+    transform-origin: left center;
   }
 }
 
 @keyframes flipOut {
   0% {
-    transform: perspective(3000px) rotateY(0deg) translateZ(0) scale(1);
+    transform: perspective(2500px) rotateY(0deg) translateZ(0) scale(1);
     opacity: 1;
     filter: blur(0) brightness(1);
+    transform-origin: left center;
   }
-  60% {
-    filter: blur(2px) brightness(0.9);
+  50% {
+    filter: blur(1px) brightness(0.85);
   }
   100% {
-    transform: perspective(3000px) rotateY(80deg) translateZ(-200px) scale(0.95);
+    transform: perspective(2500px) rotateY(-90deg) translateZ(-150px) scale(0.9);
     opacity: 0;
-    filter: blur(5px) brightness(0.8);
+    filter: blur(3px) brightness(0.7);
+    transform-origin: left center;
   }
 }
 
 .slide {
-  animation: flipIn 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: flipIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform-origin: left center;
   will-change: transform, opacity, filter;
+  backface-visibility: hidden;
 }
 
 .slide.flip-out {
-  animation: flipOut 1.2s cubic-bezier(0.7, 0, 0.84, 0);
-  transform-origin: right center;
+  animation: flipOut 0.8s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  transform-origin: left center;
   will-change: transform, opacity, filter;
+  backface-visibility: hidden;
 }
 
 /* Image Modal Styles */
