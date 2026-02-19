@@ -199,6 +199,8 @@ document.addEventListener('DOMContentLoaded', function() {
       navigator.serviceWorker.register('service-worker.js')
         .then(registration => {
           console.log('Service Worker registered successfully:', registration.scope);
+          // Pre-load all audio files into cache for offline use
+          preloadAudioForOffline();
         })
         .catch(error => {
           console.log('Service Worker registration failed:', error);
@@ -206,4 +208,20 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+// Pre-load all audio files so they are cached for offline playback
+function preloadAudioForOffline() {
+  var allAudio = document.querySelectorAll('audio[src]');
+  allAudio.forEach(function(audioEl) {
+    var src = audioEl.getAttribute('src');
+    if (src) {
+      // Fetch the audio file to trigger the service worker to cache it
+      fetch(src).then(function() {
+        console.log('Pre-cached audio:', src);
+      }).catch(function(e) {
+        console.warn('Failed to pre-cache audio:', src, e);
+      });
+    }
+  });
+}
 
