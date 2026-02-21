@@ -1,5 +1,5 @@
 /* ============================================================
-   RANSAM HEALTHCARE – Responsive Portfolio v17
+   RANSAM HEALTHCARE – Responsive Portfolio v18
    ============================================================
    Breakpoints:
      Desktop       : > 1024px  (sidebar nav on left)
@@ -597,16 +597,18 @@ h3 { font-size: var(--fs-h3); }
   }
 
   /* ---- CONTENT AREA (image-only) ----
-     Image scales naturally, never cropped.
-     Enough bottom room so audio btn doesn't sit under the nav. */
+     Fills the visible area above the bottom nav.
+     Image centered both horizontally & vertically.
+     No fixed heights – uses calc() against the nav. */
   .content-area {
     width: 100%;
-    min-height: auto;
+    min-height: calc(100vh - var(--nav-height-mobile));
+    min-height: calc(100dvh - var(--nav-height-mobile));
     height: auto;
     margin-left: 0;
-    padding: var(--sp-sm) !important;
-    padding-bottom: calc(var(--nav-height-mobile) + 60px) !important;
-    align-items: flex-start;
+    padding: var(--sp-md) !important;
+    padding-bottom: var(--sp-md) !important;
+    align-items: center;
     justify-content: center;
   }
 
@@ -679,10 +681,12 @@ h3 { font-size: var(--fs-h3); }
     padding-left: var(--sp-md);
   }
 
-  /* ---- AUDIO BUTTON – sits above the bottom nav ---- */
+  /* ---- AUDIO BUTTON – FIXED above the bottom nav ---- */
   .audio-btn {
+    position: fixed;
     bottom: calc(var(--nav-height-mobile) + 12px);
-    right: 10px;
+    right: 12px;
+    z-index: 500;
     padding: 8px 16px;
     font-size: 12px;
   }
@@ -708,7 +712,9 @@ h3 { font-size: var(--fs-h3); }
   .nav-btn { font-size: 0.5rem; padding: 0.3rem 0.42rem; }
 
   .content-area {
-    padding-bottom: calc(var(--nav-height-mobile) + 60px) !important;
+    min-height: calc(100vh - var(--nav-height-mobile));
+    min-height: calc(100dvh - var(--nav-height-mobile));
+    padding-bottom: var(--sp-md) !important;
   }
 
   .product-grid {
@@ -732,8 +738,10 @@ h3 { font-size: var(--fs-h3); }
   .home-scroll-hint { font-size: 0.7rem; bottom: 3rem; }
 
   .audio-btn {
+    position: fixed;
     bottom: calc(var(--nav-height-mobile) + 10px);
     right: 8px;
+    z-index: 500;
     padding: 7px 14px;
     font-size: 11px;
   }
