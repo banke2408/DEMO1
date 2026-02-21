@@ -609,10 +609,9 @@ li:last-child { margin-bottom: 0; }
 @media screen and (max-width: 768px) {
   :root {
     --nav-width: 0px;
-    --nav-height-mobile: auto;
   }
 
-  /* Compact bottom navigation - single scrollable row */
+  /* Navigation at the bottom - wrapped rows like original */
   .nav-sidebar {
     position: fixed;
     bottom: 0;
@@ -621,46 +620,38 @@ li:last-child { margin-bottom: 0; }
     top: auto;
     width: 100%;
     height: auto;
-    max-height: none;
+    max-height: 25vh;
     flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    padding: 0.4rem 0.5rem;
-    padding-bottom: calc(0.4rem + var(--safe-bottom));
-    gap: 0.25rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0.5rem;
+    padding-bottom: calc(0.5rem + var(--safe-bottom));
+    gap: 0.3rem;
     border-right: none;
     border-top: 2px solid #38bdf8;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     z-index: 1000;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .nav-sidebar::-webkit-scrollbar {
-    display: none;
   }
   
   .nav-btn {
     flex: 0 0 auto;
     font-size: 0.6rem;
-    padding: 0.4rem 0.65rem;
+    padding: 0.4rem 0.6rem;
     text-align: center;
     transform: none !important;
-    white-space: nowrap;
-    border-radius: 4px;
   }
   
   .nav-btn:hover {
     transform: none !important;
   }
   
-  /* Content takes full width, image fills to bottom nav */
+  /* Content fills from top to above nav bar */
   .content-area {
     width: 100%;
-    height: calc(100vh - 42px);
-    height: calc(100dvh - 42px);
+    height: 100vh;
+    height: 100dvh;
     margin-left: 0;
   }
 
@@ -739,9 +730,10 @@ li:last-child { margin-bottom: 0; }
 /* Small phones (up to 480px) */
 @media screen and (max-width: 480px) {
   .nav-sidebar {
-    padding: 0.3rem 0.4rem;
-    padding-bottom: calc(0.3rem + var(--safe-bottom));
-    gap: 0.2rem;
+    max-height: 28vh;
+    padding: 0.4rem;
+    padding-bottom: calc(0.4rem + var(--safe-bottom));
+    gap: 0.25rem;
   }
   
   .nav-btn {
@@ -750,8 +742,8 @@ li:last-child { margin-bottom: 0; }
   }
   
   .content-area {
-    height: calc(100vh - 38px);
-    height: calc(100dvh - 38px);
+    height: 100vh;
+    height: 100dvh;
     margin-left: 0;
   }
   
@@ -930,7 +922,7 @@ li:last-child { margin-bottom: 0; }
 /* Mobile adjustments for audio button */
 @media (max-width: 768px) {
   .audio-btn {
-    bottom: 55px;
+    bottom: 28vh;
     right: 10px;
     padding: 8px 16px;
     font-size: 12px;
@@ -939,7 +931,7 @@ li:last-child { margin-bottom: 0; }
 
 @media (max-width: 480px) {
   .audio-btn {
-    bottom: 50px;
+    bottom: 30vh;
     right: 8px;
     padding: 7px 14px;
     font-size: 11px;
