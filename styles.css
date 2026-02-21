@@ -1,5 +1,5 @@
 /* ============================================================
-   RANSAM HEALTHCARE – Responsive Portfolio v18
+   RANSAM HEALTHCARE – Responsive Portfolio v19
    ============================================================
    Breakpoints:
      Desktop       : > 1024px  (sidebar nav on left)
@@ -539,6 +539,12 @@ h3 { font-size: var(--fs-h3); }
 
   #home .content-area { width: 100% !important; margin-left: 0 !important; }
 
+  /* Disable image modal on tablets to prevent accidental opens during touch */
+  .content-area img.clickable-img {
+    cursor: default;
+    -webkit-touch-callout: none;
+  }
+
   .product-grid .product-text { padding: var(--sp-lg); }
   .center { padding-left: var(--nav-width); }
 }
@@ -617,6 +623,10 @@ h3 { font-size: var(--fs-h3); }
     max-width: 100%;
     height: auto;
     object-fit: contain;
+    cursor: default;                /* no pointer – modal disabled on mobile */
+    -webkit-touch-callout: none;    /* suppress iOS long-press callout       */
+    -webkit-user-select: none;
+    user-select: none;
   }
 
   /* ---- PRODUCT GRID → vertical stack ---- */

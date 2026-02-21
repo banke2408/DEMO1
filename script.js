@@ -234,9 +234,49 @@ document.addEventListener('DOMContentLoaded', function() {
   const modalCaption = modal.querySelector('.modal-caption');
   const closeBtn = modal.querySelector('.modal-close');
 
-  // Add click event to all clickable images
+  // Add click/tap event to all clickable images
+  // On mobile (≤ 600px) we disable the image modal entirely – the image is
+  // already full-width so opening it in a modal has no benefit and it gets
+  // triggered accidentally during swipe / scroll gestures.
+  // On larger screens we still allow it but guard against accidental taps by
+  // checking that the touch didn't travel more than 10px and lasted < 300ms.
+  const IMG_TAP_MOVE_LIMIT = 10;   // px – max finger travel to count as a tap
+  const IMG_TAP_TIME_LIMIT = 300;  // ms – max touch duration for a tap
+
   document.querySelectorAll('.clickable-img').forEach(img => {
-    img.addEventListener('click', function() {
+    let imgTouchStartX = 0;
+    let imgTouchStartY = 0;
+    let imgTouchStartTime = 0;
+
+    img.addEventListener('touchstart', function(e) {
+      imgTouchStartX = e.changedTouches[0].screenX;
+      imgTouchStartY = e.changedTouches[0].screenY;
+      imgTouchStartTime = Date.now();
+    }, { passive: true });
+
+    img.addEventListener('touchend', function(e) {
+      // Never open modal on phones / small tablets
+      if (window.innerWidth <= 1024) return;
+
+      const dx = Math.abs(e.changedTouches[0].screenX - imgTouchStartX);
+      const dy = Math.abs(e.changedTouches[0].screenY - imgTouchStartY);
+      const dt = Date.now() - imgTouchStartTime;
+
+      // Only open if it was a clean, short, stationary tap
+      if (dx < IMG_TAP_MOVE_LIMIT && dy < IMG_TAP_MOVE_LIMIT && dt < IMG_TAP_TIME_LIMIT) {
+        modal.classList.add('active');
+        modalImg.src = this.src;
+        modalCaption.textContent = this.alt;
+      }
+    });
+
+    // Desktop mouse click – still works normally
+    img.addEventListener('click', function(e) {
+      // Ignore if it came from a touch event (handled above)
+      if (e.sourceCapabilities && e.sourceCapabilities.firesTouchEvents) return;
+      // Also skip on narrow viewports (mouse-capable tablets in portrait, etc.)
+      if (window.innerWidth <= 1024) return;
+
       modal.classList.add('active');
       modalImg.src = this.src;
       modalCaption.textContent = this.alt;
